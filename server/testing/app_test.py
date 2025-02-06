@@ -1,5 +1,4 @@
 import json
-
 from app import app
 from models import db, Plant
 
@@ -54,6 +53,7 @@ class TestPlant:
             db.session.commit()
             
             response = app.test_client().delete(f'/plants/{lo.id}')
-            data = response.data.decode()
+            data = json.loads(response.data.decode())
 
-            assert(not data)
+            assert(response.status_code == 200)
+            assert(data["message"] == "Plant deleted")
